@@ -3,19 +3,21 @@ import socketIO from "socket.io"
 import { join } from "path"
 import logger from "morgan"
 
-
+const PORT = 4000
 const app = express()
 app.set("view engine", "pug")
 app.set("views", join(__dirname,"views"))
-app.use(express.static(join(__dirname,"static")))
 app.use(logger("dev"))
+app.use(express.static(join(__dirname,"static")))
 app.get("/", (req,res) => res.render("home"))
-const server = app.listen(4000, () => console.log(`✅ server connected : http://localhost:4000 `))
+const handleListenning = () => {
+    console.log(`✅ server connected : http://localhost:${PORT} `)
+}
+const server = app.listen(PORT, handleListenning)
 
 const io = socketIO(server)
-
-let sockets = []
+let sockets=[]
 io.on("connection", (socket)=> {
-    sockets.push(socket.id)
+    // socket.broadcast.emit("hello")
+    socket.on("hello Guys", () => console.log("the client said hello"))
 })
-console.log(sockets)
