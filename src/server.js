@@ -19,5 +19,10 @@ const io = socketIO(server)
 let sockets=[]
 io.on("connection", (socket)=> {
     // socket.broadcast.emit("hello")
-    socket.on("hello Guys", () => console.log("the client said hello"))
+    socket.on("newMessage", ({message}) => {
+        socket.broadcast.emit("messageNotif", {message, nickname: socket.nickname || "Anonymous"})
+    })
+    socket.on("setNickname", ({nickname})=>{
+        socket.nickname = nickname
+    })
 })
