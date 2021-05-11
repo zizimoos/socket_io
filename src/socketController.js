@@ -10,6 +10,9 @@ const socketController = (socket) => {
     console.log("disconnected" + `${socket.nickname}`);
     broadcast(events.disconnected, { nickname: socket.nickname });
   });
+  socket.on(events.sendMsg, ({ message }) => {
+    broadcast(events.newMsg, { message, nickname: socket.nickname });
+  });
 };
 
 export default socketController;
